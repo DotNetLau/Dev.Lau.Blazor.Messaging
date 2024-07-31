@@ -1,0 +1,26 @@
+﻿@using Dev.Lau.Blazor.Messaging.Services
+@inject BusPublisher _busPublisher;
+@page "/products-add"
+@rendermode InteractiveServer
+
+<h3>Add Product</h3>
+
+<InputText @bind-Value="ProductName" DisplayName="Add product name" />
+<button @onclick="AddProduct">Add product</button>
+
+@code {
+    private string ProductName { get; set; } = string.Empty;
+
+    private void AddProduct()
+    {
+        if (!string.IsNullOrWhiteSpace(ProductName))
+        {
+            _busPublisher.PublishProductCreated(ProductName);
+            ProductName = string.Empty;
+        }
+        else
+        {
+            throw new ArgumentNullException("ProductName cannot be empty");
+        }
+    }
+}
